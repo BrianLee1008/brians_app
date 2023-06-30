@@ -1,0 +1,12 @@
+plugins {
+    id("ui-precompiled")
+}
+
+dependencies {
+    implementation(project(":foundation"))
+    implementation(project(":gateway"))
+    implementation(project(":shared-ui"))
+    implementation(project(":shared-domain"))
+    implementation(project(":home-domain"))
+    implementation(project(":home-ui"))
+}
