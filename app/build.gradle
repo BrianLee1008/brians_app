@@ -1,6 +1,64 @@
+import dependencies.AndroidEnvironmentValue
+import dependencies.Versions
+//
+//plugins {
+//    id("ui-precompiled")
+//}
+//
+
 plugins {
-    id("ui-precompiled")
+    id("com.android.application")
+    id("kotlin-android")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
+
+android {
+    compileSdk = AndroidEnvironmentValue.COMPILE_SDK
+
+    defaultConfig {
+        applicationId = AndroidEnvironmentValue.APPLICATION_ID
+        minSdk = AndroidEnvironmentValue.MIN_SDK
+        targetSdk = AndroidEnvironmentValue.TARGET_SDK
+        versionCode = AndroidEnvironmentValue.VERSION_CODE
+        versionName = AndroidEnvironmentValue.VERSION_NAME
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    hilt {
+        enableExperimentalClasspathAggregation = true
+    }
+}
+
 
 dependencies {
     implementation(project(":foundation"))
@@ -9,4 +67,12 @@ dependencies {
     implementation(project(":shared-domain"))
     implementation(project(":home-domain"))
     implementation(project(":home-ui"))
+
+    implementation(dependencies.Dependency.AndroidX.APP_COMPAT)
+
+    implementation(dependencies.Dependency.KTX.CORE)
+
+    implementation(dependencies.Dependency.Hilt.CORE)
+    kapt(dependencies.Dependency.Hilt.APT)
+    implementation(dependencies.Dependency.Hilt.NAVIGATION_COMPOSE)
 }
